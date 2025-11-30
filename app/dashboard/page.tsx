@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import styles from "./page.module.scss";
 
 export default async function Dashboard() {
   const supabase = createClient();
@@ -22,42 +23,26 @@ export default async function Dashboard() {
   }
 
   return (
-    <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-      <h1 style={{ marginBottom: "2rem" }}>Dashboard</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Dashboard</h1>
       {transactions && transactions.length > 0 ? (
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            border: "1px solid #e0e0e0",
-          }}
-        >
+        <table className={styles.table}>
           <thead>
-            <tr style={{ backgroundColor: "#f5f5f5" }}>
-              <th style={{ padding: "0.75rem", textAlign: "left", borderBottom: "2px solid #ccc" }}>
-                Date
-              </th>
-              <th style={{ padding: "0.75rem", textAlign: "left", borderBottom: "2px solid #ccc" }}>
-                Description
-              </th>
-              <th style={{ padding: "0.75rem", textAlign: "right", borderBottom: "2px solid #ccc" }}>
-                Amount
-              </th>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th className={styles.amountHeader}>Amount</th>
             </tr>
           </thead>
           <tbody>
             {transactions.map((transaction) => (
-              <tr key={transaction.id} style={{ borderBottom: "1px solid #e0e0e0" }}>
-                <td style={{ padding: "0.75rem" }}>
-                  {new Date(transaction.date).toLocaleDateString()}
-                </td>
-                <td style={{ padding: "0.75rem" }}>{transaction.description}</td>
+              <tr key={transaction.id}>
+                <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                <td>{transaction.description}</td>
                 <td
-                  style={{
-                    padding: "0.75rem",
-                    textAlign: "right",
-                    color: parseFloat(transaction.amount) >= 0 ? "#2e7d32" : "#d32f2f",
-                  }}
+                  className={`${styles.amountCell} ${
+                    parseFloat(transaction.amount) >= 0 ? styles.positive : styles.negative
+                  }`}
                 >
                   ${parseFloat(transaction.amount).toFixed(2)}
                 </td>
@@ -66,7 +51,9 @@ export default async function Dashboard() {
           </tbody>
         </table>
       ) : (
-        <p>No transactions yet. Import some transactions to get started!</p>
+        <p className={styles.emptyMessage}>
+          No transactions yet. Import some transactions to get started!
+        </p>
       )}
     </div>
   );

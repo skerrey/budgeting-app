@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.scss";
 
 export default function ImportPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -70,13 +71,11 @@ export default function ImportPage() {
   }
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h1 style={{ marginBottom: "2rem" }}>Import Transactions</h1>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <div>
-          <label htmlFor="file-input" style={{ display: "block", marginBottom: "0.5rem" }}>
-            Select CSV file (QFX/OFX coming soon)
-          </label>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Import Transactions</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="file-input">Select CSV file (QFX/OFX coming soon)</label>
           <input
             id="file-input"
             type="file"
@@ -84,35 +83,16 @@ export default function ImportPage() {
             accept=".csv,.qfx,.ofx"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
             required
-            style={{
-              padding: "0.5rem",
-              fontSize: "1rem",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              width: "100%",
-            }}
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading || !file}
-          style={{
-            padding: "0.75rem 1.5rem",
-            backgroundColor: loading || !file ? "#ccc" : "#0070f3",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: loading || !file ? "not-allowed" : "pointer",
-          }}
-        >
+        <button type="submit" disabled={loading || !file} className={styles.submitButton}>
           {loading ? "Importing..." : "Import"}
         </button>
         {message && (
           <p
-            style={{
-              color: message.includes("Error") ? "#d32f2f" : "#2e7d32",
-              marginTop: "0.5rem",
-            }}
+            className={`${styles.message} ${
+              message.includes("Error") ? styles.error : styles.success
+            }`}
           >
             {message}
           </p>

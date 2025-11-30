@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import SignInForm from "@/components/SignInForm";
+import styles from "./page.module.scss";
 
 export default async function Home() {
   const supabase = createClient();
@@ -10,34 +11,14 @@ export default async function Home() {
 
   if (user) {
     return (
-      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <h1 style={{ marginBottom: "1rem" }}>My Finance</h1>
-        <p style={{ marginBottom: "2rem" }}>Welcome, {user.email}</p>
-        <div style={{ display: "flex", gap: "1rem", flexDirection: "column" }}>
-          <a
-            href="/dashboard"
-            style={{
-              display: "inline-block",
-              padding: "0.75rem 1.5rem",
-              backgroundColor: "#0070f3",
-              color: "white",
-              borderRadius: "4px",
-              textAlign: "center",
-            }}
-          >
+      <div className={styles.container}>
+        <h1 className={styles.title}>My Finance</h1>
+        <p className={styles.welcomeText}>Welcome, {user.email}</p>
+        <div className={styles.buttonContainer}>
+          <a href="/dashboard" className={styles.button}>
             Dashboard
           </a>
-          <a
-            href="/import"
-            style={{
-              display: "inline-block",
-              padding: "0.75rem 1.5rem",
-              backgroundColor: "#0070f3",
-              color: "white",
-              borderRadius: "4px",
-              textAlign: "center",
-            }}
-          >
+          <a href="/import" className={styles.button}>
             Import Transactions
           </a>
         </div>
@@ -46,8 +27,8 @@ export default async function Home() {
   }
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto", textAlign: "center" }}>
-      <h1 style={{ marginBottom: "2rem" }}>My Finance</h1>
+    <div className={styles.landingContainer}>
+      <h1 className={styles.landingTitle}>My Finance</h1>
       <SignInForm />
     </div>
   );

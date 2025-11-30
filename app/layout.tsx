@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import "./globals.css";
+import "./globals.scss";
+import styles from "./layout.module.scss";
 
 export const metadata = {
   title: "My Finance",
@@ -27,28 +28,19 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header style={{ padding: "1rem 2rem", borderBottom: "1px solid #e0e0e0" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h1 style={{ margin: 0, fontSize: "1.5rem" }}>My Finance</h1>
+        <header className={styles.header}>
+          <div className={styles.headerContent}>
+            <h1 className={styles.title}>My Finance</h1>
             {user && (
               <form action={signOut}>
-                <button
-                  type="submit"
-                  style={{
-                    padding: "0.5rem 1rem",
-                    backgroundColor: "#f0f0f0",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
-                >
+                <button type="submit" className={styles.signOutButton}>
                   Sign out
                 </button>
               </form>
             )}
           </div>
         </header>
-        <main style={{ padding: "2rem" }}>{children}</main>
+        <main className={styles.main}>{children}</main>
       </body>
     </html>
   );
